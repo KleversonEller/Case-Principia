@@ -1,0 +1,28 @@
+# Arquivo de requisições HTTP para testar a API de alunos durante o desenvolvimento.
+
+### List alunos
+GET http://localhost:3001/alunos
+
+### Get alunos
+GET http://localhost:3001/alunos/1
+
+### Create alunos
+POST http://localhost:3001/alunos
+Content-Type: application/json
+
+{
+  "nome": "Aluno",
+  "email": "aluno.teste@email.com"
+}
+
+### Update alunos
+PATCH http://localhost:3001/alunos/1
+Content-Type: application/json
+
+{
+  "nome": "Aluno Teste Atualizado",
+  "email": "aluno@email.com"
+}
+
+### Delete alunos
+DELETE http://localhost:3001/alunos/1

@@ -35,9 +35,13 @@ model Matricula {
   alunoId   Int
   curso     Curso    @relation(fields: [cursoId], references: [id])
   cursoId   Int
+  situacao  String   @default("pendente")
+  status    String   @default("pendente")
   createdAt DateTime @default(now())
 
   @@index([createdAt])
+  @@index([situacao])
+  @@index([status])
 }
 
 model Log {

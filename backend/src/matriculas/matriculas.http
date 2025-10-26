@@ -12,7 +12,8 @@ Content-Type: application/json
 
 {
   "alunoId": 1,
-  "cursoId": 1
+  "cursoId": 2,
+  "situacao": "ativa"
 }
 
 ### Update matriculas

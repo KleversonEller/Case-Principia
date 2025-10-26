@@ -2,7 +2,7 @@ import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateAlunoDto {
-  @IsString()
+  @IsString({ message: 'O nome deve ser uma string' })
   @IsNotEmpty({ message: 'O nome não pode ser vazio' })
   @ApiProperty({ description: 'Nome completo do aluno', example: 'João da Silva' })
   nome: string;

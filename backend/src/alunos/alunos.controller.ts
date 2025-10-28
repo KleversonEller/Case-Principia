@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, BadRequestException, NotFoundException, HttpCode } from '@nestjs/common';
 import { AlunosService } from './alunos.service';
 import { CreateAlunoDto } from './dto/create-aluno.dto';
 import { UpdateAlunoDto } from './dto/update-aluno.dto';
@@ -29,8 +29,14 @@ export class AlunosController {
   @ApiOperation({ summary: 'Obter detalhes de um aluno por ID' })
   @ApiResponse({ status: 200, description: 'Detalhes do aluno retornados com sucesso.' })
   @ApiResponse({ status: 404, description: 'Aluno não encontrado.' })
-  findOne(@Param('id') id: string) {
-    return this.alunosService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const aluno = await this.alunosService.findOne(+id);
+
+    if (!aluno) {
+      throw new NotFoundException('Aluno não encontrado');
+    }
+
+    return aluno;
   }
 
   @Patch(':id')
@@ -38,15 +44,30 @@ export class AlunosController {
   @ApiResponse({ status: 200, description: 'Aluno atualizado com sucesso.' })
   @ApiResponse({ status: 400, description: 'Dados inválidos.' })
   @ApiResponse({ status: 404, description: 'Aluno não encontrado.' })
-  update(@Param('id') id: string, @Body() UpdateAlunoDto: UpdateAlunoDto) {
-    return this.alunosService.update(+id, UpdateAlunoDto);
+  async update(@Param('id') id: string, @Body() UpdateAlunoDto: UpdateAlunoDto) {
+    const alunoUpdate = await this.alunosService.update(+id, UpdateAlunoDto);
+
+    if (!alunoUpdate) {
+      throw new NotFoundException('Aluno não encontrado');
+    }
+
+    return alunoUpdate;
   }
 
   @Delete(':id')
   @ApiOperation({ summary: 'Remover um aluno por ID' })
-  @ApiResponse({ status: 200, description: 'Aluno removido com sucesso.' })
+  @ApiResponse({ status: 204, description: 'Aluno removido com sucesso.' })
   @ApiResponse({ status: 404, description: 'Aluno não encontrado.' })
-  remove(@Param('id') id: string) {
-    return this.alunosService.remove(+id);
+  @HttpCode(204)
+  async remove(@Param('id') id: string) {
+    try {
+      await this.alunosService.remove(+id);
+
+    } catch (error) {
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+      throw new NotFoundException('Aluno não encontrado');
+    }
   }
 }

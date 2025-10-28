@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, BadRequestException, NotFoundException, HttpCode } from '@nestjs/common';
 import { MatriculasService } from './matriculas.service';
 import { CreateMatriculaDto } from './dto/create-matricula.dto';
 import { UpdateMatriculaDto } from './dto/update-matricula.dto';
@@ -29,8 +29,14 @@ export class MatriculasController {
   @ApiOperation({ summary: 'Obter detalhes de uma matrícula por ID' })
   @ApiResponse({ status: 200, description: 'Detalhes da matrícula retornados com sucesso.' })
   @ApiResponse({ status: 404, description: 'Matrícula não encontrada.' })
-  findOne(@Param('id') id: string) {
-    return this.matriculasService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const matricula = await this.matriculasService.findOne(+id);
+
+    if (!matricula) {
+      throw new NotFoundException('Matrícula não encontrada');
+    }
+
+    return matricula;
   }
 
   @Patch(':id')
@@ -38,15 +44,30 @@ export class MatriculasController {
   @ApiResponse({ status: 200, description: 'Matrícula atualizada com sucesso.' })
   @ApiResponse({ status: 400, description: 'Dados inválidos.' })
   @ApiResponse({ status: 404, description: 'Matrícula não encontrada.' })
-  update(@Param('id') id: string, @Body() updateMatriculaDto: UpdateMatriculaDto) {
-    return this.matriculasService.update(+id, updateMatriculaDto);
+  async update(@Param('id') id: string, @Body() updateMatriculaDto: UpdateMatriculaDto) {
+    const matriculaUpdate = await this.matriculasService.update(+id, updateMatriculaDto);
+
+    if (!matriculaUpdate) {
+      throw new NotFoundException('Matrícula não encontrada');
+    }
+
+    return matriculaUpdate;
   }
 
   @Delete(':id')
   @ApiOperation({ summary: 'Remover uma matrícula por ID' })
-  @ApiResponse({ status: 200, description: 'Matrícula removida com sucesso.' })
+  @ApiResponse({ status: 204, description: 'Matrícula removida com sucesso.' })
   @ApiResponse({ status: 404, description: 'Matrícula não encontrada.' })
-  remove(@Param('id') id: string) {
-    return this.matriculasService.remove(+id);
+  @HttpCode(204)
+  async remove(@Param('id') id: string) {
+    try {
+      await this.matriculasService.remove(+id);
+
+    } catch (error) {
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+      throw new NotFoundException('Matrícula não encontrada');  
+    }
   }
 }

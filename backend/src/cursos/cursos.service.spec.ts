@@ -18,7 +18,9 @@ describe('CursosService', () => {
       create: jest.fn(),
       update: jest.fn(),
       delete: jest.fn(),
+      count: jest.fn(),
     },
+    $transaction: jest.fn(),
   };
 
   const mockLogsService = {
@@ -54,11 +56,19 @@ describe('CursosService', () => {
         { id: 2, nome: 'Avançado em TypeScript', descricao: 'Curso avançado de TypeScript' },
       ];
       (prismaService.curso.findMany as jest.Mock).mockResolvedValue(cursosMock);
+      (prismaService.curso.count as jest.Mock).mockResolvedValue(cursosMock.length);
+      (prismaService.$transaction as jest.Mock).mockResolvedValue([cursosMock.length, cursosMock]);
 
-      const result = await service.findAll();
+      const result = await service.findAll({} as any);
 
       expect(prismaService.curso.findMany).toHaveBeenCalledTimes(1);
-      expect(result).toEqual(cursosMock);
+      expect(result).toEqual({
+        cursos: cursosMock,
+        total: cursosMock.length,
+        page: 1,
+        limit: 10,
+        totalPages: 1,
+      });
     });
   });
 

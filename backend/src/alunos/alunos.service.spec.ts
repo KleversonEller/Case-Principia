@@ -18,7 +18,9 @@ describe('AlunosService', () => {
       create: jest.fn(),
       update: jest.fn(),
       delete: jest.fn(),
+      count: jest.fn(),
     },
+    $transaction: jest.fn(),
   };
 
   const mockLogsService = {
@@ -51,11 +53,19 @@ describe('AlunosService', () => {
     it('should return a list of students', async () => {
       const alunosMock = [{ id: 1, nome: 'João' }, { id: 2, nome: 'Maria' }];
       (prismaService.aluno.findMany as jest.Mock).mockResolvedValue(alunosMock);
+      (prismaService.aluno.count as jest.Mock).mockResolvedValue(alunosMock.length);
+      (prismaService.$transaction as jest.Mock).mockResolvedValue([alunosMock.length, alunosMock]);
 
-      const result = await service.findAll();
+      const result = await service.findAll({} as any);
 
       expect(prismaService.aluno.findMany).toHaveBeenCalledTimes(1);
-      expect(result).toEqual(alunosMock);
+      expect(result).toEqual({
+        alunos: alunosMock,
+        total: alunosMock.length,
+        page: 1,
+        limit: 10,
+        totalPages: Math.ceil(alunosMock.length / 10),
+      });
     });
   });
 

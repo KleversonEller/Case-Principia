@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, BadRequestException, NotFoundException, HttpCode } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, BadRequestException, NotFoundException, HttpCode, Query } from '@nestjs/common';
 import { AlunosService } from './alunos.service';
 import { CreateAlunoDto } from './dto/create-aluno.dto';
 import { UpdateAlunoDto } from './dto/update-aluno.dto';
+import { PaginateAlunosDto } from './dto/paginate-alunos.dto';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @ApiTags('Alunos')
@@ -21,8 +22,8 @@ export class AlunosController {
   @Get()
   @ApiOperation({ summary: 'Listar todos os alunos' })
   @ApiResponse({ status: 200, description: 'Lista de alunos retornada com sucesso.' })
-  findAll() {
-    return this.alunosService.findAll();
+  async findAll(@Query() query: PaginateAlunosDto) {
+    return this.alunosService.findAll(query);
   }
 
   @Get(':id')

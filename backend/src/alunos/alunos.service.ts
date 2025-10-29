@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAlunoDto } from './dto/create-aluno.dto';
 import { UpdateAlunoDto } from './dto/update-aluno.dto';
+import { PaginateAlunosDto } from './dto/paginate-alunos.dto';
 import { PrismaService } from '../../prisma/prisma.service';
 import { LogsService } from 'src/logs/logs.service';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class AlunosService {
@@ -24,8 +26,36 @@ export class AlunosService {
     return aluno;
   }
 
-  findAll() {
-    return this.prisma.aluno.findMany();
+  async findAll(params: PaginateAlunosDto) {
+    const { search, page = 1, limit = 10, sort = 'createdAt', order = 'desc' } = params;
+    const skip = (page - 1) * limit;
+
+    const where: Prisma.AlunoWhereInput = search
+      ? {
+          OR: [
+            { nome: { contains: search, mode: 'insensitive' as Prisma.QueryMode } },
+            { email: { contains: search, mode: 'insensitive' as Prisma.QueryMode } },
+          ],
+        }
+      : {};
+
+    const [total, alunos] = await this.prisma.$transaction([
+      this.prisma.aluno.count({ where }),
+      this.prisma.aluno.findMany({
+        where,
+        skip,
+        take: limit,
+        orderBy: { [sort]: order },
+      }),
+    ]);
+
+    return {
+      alunos,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    };
   }
 
   findOne(id: number) {

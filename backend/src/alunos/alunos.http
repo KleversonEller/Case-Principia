@@ -3,7 +3,10 @@
 ### List alunos
 GET http://localhost:3001/alunos
 
-### Get alunos
+### Get alunos com paginação, busca e ordenação
+GET http://localhost:3001/alunos?search=igor&page=1&limit=5&sort=createdAt&order=asc
+
+### Get alunos por ID
 GET http://localhost:3001/alunos/1
 
 ### Create alunos

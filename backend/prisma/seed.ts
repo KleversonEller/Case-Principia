@@ -83,7 +83,7 @@ for (const curso of cursosData) {
           cursoId: curso.id,
           situacao: Math.random() > 0.5 ? 'ativa' : 'cancelada',
           status: Math.random() > 0.5 ? 'cursando' : 'concluido',
-        },
+        } as any,
       });
     }
   }

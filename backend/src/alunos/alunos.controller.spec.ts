@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/unbound-method */
 import { Test, TestingModule } from '@nestjs/testing';
 import { AlunosController } from './alunos.controller';
@@ -50,7 +51,7 @@ describe('AlunosController', () => {
 
   describe('findAll', () => {
     it('should return an array of alunos', async () => {
-      const result = await controller.findAll();
+      const result = await controller.findAll({} as any);
       expect(result).toEqual([mockAluno]);
       expect(service.findAll).toHaveBeenCalled();
     });

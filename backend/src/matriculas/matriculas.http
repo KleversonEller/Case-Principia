@@ -1,0 +1,29 @@
+# Arquivo de requisições HTTP para testar a API de matriculas durante o desenvolvimento.
+
+### List matriculas
+GET http://localhost:3001/matriculas
+
+### Get matriculas
+GET http://localhost:3001/matriculas/1
+
+### Create matriculas
+POST http://localhost:3001/matriculas
+Content-Type: application/json
+
+{
+  "alunoId": 1,
+  "cursoId": 2,
+  "situacao": "ativa"
+}
+
+### Update matriculas
+PATCH http://localhost:3001/matriculas/1
+Content-Type: application/json
+
+{
+  "alunoId": 1,
+  "cursoId": 1
+}
+
+### Delete matriculas
+DELETE http://localhost:3001/matriculas/1

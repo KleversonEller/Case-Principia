@@ -1,0 +1,54 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: cursos_alunos_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 5s
+      timeout: 2s
+      retries: 5
+
+  backend:
+    build: ./backend
+    container_name: nestjs_app
+    ports:
+      - "3001:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/cursos_alunos_db
+    command: >
+      sh -c "
+        echo '🧨 Banco disponível, iniciando setup...' &&
+        PGPASSWORD=postgres psql -h db -U postgres -d postgres -c 'DROP DATABASE IF EXISTS cursos_alunos_db;' &&
+        PGPASSWORD=postgres psql -h db -U postgres -d postgres -c 'CREATE DATABASE cursos_alunos_db;' &&
+        echo '🧩 Prisma generate e migrations...' &&
+        npx prisma generate &&
+        npx prisma migrate deploy &&
+        echo '🌱 Rodando seed...' &&
+        npx prisma db seed &&
+        echo '🚀 Iniciando NestJS...' &&
+        npm run start
+      "
+    volumes:
+      - ./backend:/app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 5s
+      timeout: 2s
+      retries: 10
+
+volumes:
+  pgdata:

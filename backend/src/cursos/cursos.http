@@ -1,0 +1,28 @@
+# Arquivo de requisições HTTP para testar a API de cursos durante o desenvolvimento.
+
+### List cursos
+GET http://localhost:3001/cursos
+
+### Get cursos
+GET http://localhost:3001/cursos/1
+
+### Create cursos
+POST http://localhost:3001/cursos
+Content-Type: application/json
+
+{
+  "nome": "Informatica",
+  "descricao": "Curso de informatica basica"
+}
+
+### Update cursos
+PATCH http://localhost:3001/cursos/1
+Content-Type: application/json
+
+{
+  "nome": "Informatica Avancada",
+  "descricao": "Curso de informatica avancada"
+}
+
+### Delete cursos
+DELETE http://localhost:3001/cursos/1

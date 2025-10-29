@@ -1,4 +1,4 @@
-# 🧩 Teste Fullstack — CRUD de Itens (NestJS + React + Docker)
+# 🧩 Teste Fullstack — CRUD em (NestJS + React + Docker)
 
 Este projeto é um CRUD Fullstack desenvolvido como teste técnico, utilizando **NestJS** no backend e **React (Vite)** no frontend, ambos rodando em contêineres Docker.  
 O sistema permite **criar, listar, editar e excluir itens**, com paginação, busca e ordenação.
@@ -33,7 +33,6 @@ O sistema permite **criar, listar, editar e excluir itens**, com paginação, bu
 | **backend**  | 3001   | API NestJS com Prisma e Swagger |
 | **frontend** | 5173   | UI React com Vite |
 | **db**       | 5432   | Banco de dados PostgreSQL |
-| **pgadmin** *(opcional)* | 8080 | Interface web para PostgreSQL |
 
 ---
 
@@ -43,9 +42,25 @@ O sistema permite **criar, listar, editar e excluir itens**, com paginação, bu
 root/
 ├── backend/
 │   ├── src/
-│   │   ├── items/
-│   │   │   ├── items.controller.ts
-│   │   │   ├── items.service.ts
+│   │   ├── alunos/
+│   │   │   ├── alunos.controller.ts
+│   │   │   ├── alunos.service.ts
+│   │   │   ├── alunos.module.ts
+│   │   │   └── dto/
+│   │   ├── cursos/
+│   │   │   ├── cursos.controller.ts
+│   │   │   ├── cursos.service.ts
+│   │   │   ├── cursos.module.ts
+│   │   │   └── dto/
+│   │   ├── matriculas/
+│   │   │   ├── matriculas.controller.ts
+│   │   │   ├── matriculas.service.ts
+│   │   │   ├── matriculas.module.ts
+│   │   │   └── dto/
+│   │   ├── logs/
+│   │   │   ├── logs.controller.ts
+│   │   │   ├── logs.service.ts
+│   │   │   ├── logs.module.ts
 │   │   │   └── dto/
 │   │   └── main.ts
 │   ├── prisma/
@@ -70,47 +85,34 @@ root/
 
 1. Clonar o repositório
 ```bash
-git clone https://github.com/seuusuario/teste-fullstack.git
-cd teste-fullstack
+git clone git@github.com:KleversonEller/Case-Principia.git
+cd Case-Principia
 ```
 
-2. Configurar variáveis de ambiente
+2. Ter o docker compose instalado
 
-Backend — backend/.env
-```env
-DATABASE_URL="postgresql://postgres:postgres@db:5432/items_db?schema=public"
-PORT=3001
+```bash
+docker compose version
+```
+OU
+```bash
+docker-compose --version
 ```
 
-Frontend — frontend/.env
-```env
-VITE_API_BASE_URL=http://localhost:3001
-```
+Caso não tenha o docker intalado instale seguindo a [documentação](https://docs.docker.com/compose/install/#installation-scenarios)
 
 3. Subir o ambiente com Docker
 ```bash
-docker-compose up --build
+docker-compose up -d
+```
+OU
+```bash
+docker compose up -d
 ```
 
 URLs após subir:
 - API: http://localhost:3001
-- Swagger: http://localhost:3001/api
-- Frontend: http://localhost:5173
-
----
-
-## 🧱 Banco de Dados (Prisma)
-
-Rodar migrations e seeds:
-```bash
-docker exec -it backend npx prisma migrate deploy
-docker exec -it backend npx prisma db seed
-```
-
-Acessar Prisma Studio (opcional):
-```bash
-docker exec -it backend npx prisma studio
-```
+- Swagger: http://localhost:3001/api/docs
 
 ---
 
@@ -118,35 +120,13 @@ docker exec -it backend npx prisma studio
 
 Backend (Jest)
 ```bash
-docker exec -it backend npm run test
+docker exec -it nestjs_app npm run test
 ```
 Cobertura de testes inclui:
-- Criação de item (válido/inválido)
-- Listagem com paginação e busca
-- Atualização e deleção
-- Validação de campos e erros 404
-
-Frontend (Vitest)
-```bash
-docker exec -it frontend npm run test
-```
-Cobertura de testes inclui:
-- Store (Zustand): atualização de estado
-- Lista: renderização, busca e paginação
-- Formulário: validação e envio
-- Exclusão: confirmação e remoção na UI
-
----
-
-## 🔍 Endpoints principais (API REST)
-
-| Método | Rota                                 | Descrição                          |
-|--------|--------------------------------------|------------------------------------|
-| GET    | /items?search=&page=1&limit=10&sort=createdAt&order=desc | Lista itens                        |
-| GET    | /items/:id                           | Buscar item por ID                 |
-| POST   | /items                               | Criar item ({ name, status })      |
-| PATCH  | /items/:id                           | Atualizar item                     |
-| DELETE | /items/:id                           | Remover item                       |
+- Criação de alunos/cursos/matriculas
+- Listagem
+- Atualização e exclusão
+- Validação de erros 404
 
 ---
 
@@ -163,32 +143,13 @@ Cobertura de testes inclui:
 
 ---
 
-## 🧱 Build manual (sem Docker)
-
-Backend
-```bash
-cd backend
-npm install
-npx prisma migrate dev
-npm run start:dev
-```
-
-Frontend
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
----
-
 ## 🧠 Extras implementados
 - Seeds automáticos via Prisma
 - Logs estruturados (NestJS Logger)
 - Paginação e ordenação múltipla
-- Filtros persistentes na URL (frontend)
-- Feedbacks/toasts de sucesso e erro
-- Testes unitários em backend e frontend
+<!-- - Filtros persistentes na URL (frontend) -->
+<!-- - Feedbacks/toasts de sucesso e erro -->
+- Testes unitários em backend
 
 ---
 
@@ -196,13 +157,23 @@ npm run dev
 
 Inicie tudo com:
 ```bash
-docker-compose up --build
+docker-compose up -d
+```
+Para visualizar os logs:
+```bash
+docker compose logs -f backend
+```
+Para rodar os testes:
+```bash
+docker exec -it nestjs_app npm run test
 ```
 
 Acesse:
 - Frontend: http://localhost:5173
-- API Swagger: http://localhost:3001/api
+- API Swagger: http://localhost:3001/api/docs
 
-Autor: Seu Nome Aqui  
+---
+
+Autor: Kleverson Eller  
 Data: 2025  
 Licença: MIT

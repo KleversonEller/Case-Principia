@@ -24,5 +24,5 @@ export class PaginateAlunosDto {
 
   @IsOptional()
   @IsString()
-  order?: 'asc' | 'desc' = 'desc';
+  order?: 'asc' | 'desc' = 'asc';
 }

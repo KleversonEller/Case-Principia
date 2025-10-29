@@ -24,5 +24,5 @@ export class PaginateCursosDto {
 
   @IsOptional()
   @IsString()
-  order?: 'asc' | 'desc' = 'desc';
+  order?: 'asc' | 'desc' = 'asc';
 }

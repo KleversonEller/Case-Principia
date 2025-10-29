@@ -27,7 +27,7 @@ export class AlunosService {
   }
 
   async findAll(params: PaginateAlunosDto) {
-    const { search, page = 1, limit = 10, sort = 'createdAt', order = 'desc' } = params;
+    const { search, page = 1, limit = 10, sort = 'createdAt', order = 'asc' } = params;
     const skip = (page - 1) * limit;
 
     const where: Prisma.AlunoWhereInput = search

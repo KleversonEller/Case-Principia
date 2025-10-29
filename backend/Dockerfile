@@ -4,7 +4,10 @@
 FROM node:20-alpine AS builder
 WORKDIR /app
 
-# Copia apenas arquivos de dependência e instala
+# Instala cliente do Postgres (psql)
+RUN apk add --no-cache postgresql-client
+
+# Copia arquivos de dependência e instala
 COPY package*.json ./
 RUN npm install
 
@@ -16,13 +19,14 @@ RUN npm run build
 FROM node:20-alpine
 WORKDIR /app
 
+# Instala o cliente do Postgres também no runtime
+# (necessário se você usa comandos psql no startup)
+RUN apk add --no-cache postgresql-client
+
 # Copia apenas o necessário do build
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
-
-# Dá permissão total (leitura, escrita e execução) para tudo em /app
-RUN chmod -R 777 /app
 
 EXPOSE 3000
 

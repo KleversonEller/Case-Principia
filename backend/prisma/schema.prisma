@@ -31,9 +31,9 @@ model Curso {
 
 model Matricula {
   id        Int      @id @default(autoincrement())
-  aluno     Aluno    @relation(fields: [alunoId], references: [id])
+  aluno     Aluno    @relation(fields: [alunoId], references: [id], onDelete: Cascade)
   alunoId   Int
-  curso     Curso    @relation(fields: [cursoId], references: [id])
+  curso     Curso    @relation(fields: [cursoId], references: [id], onDelete: Cascade)
   cursoId   Int
   situacao  String   @default("pendente")
   status    String   @default("pendente")

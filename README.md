@@ -109,6 +109,7 @@ OU
 ```bash
 docker compose up -d
 ```
+Isso pode demorar um pouco, não feche o terminal ou encerre a execução
 
 URLs após subir:
 - API: http://localhost:3001

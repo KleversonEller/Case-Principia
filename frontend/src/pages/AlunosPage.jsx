@@ -10,6 +10,7 @@ export default function AlunosPage() {
   const [search, setSearch] = useState("");
   const [pagina, setPagina] = useState(1);
   const [totalPaginas, setTotalPaginas] = useState(1);
+  const [limit, setLimit] = useState(5);
   const [loading, setLoading] = useState(false);
   const [modalAluno, setModalAluno] = useState(null); // quando != null, mostra modal no lugar da tabela
 
@@ -19,7 +20,7 @@ export default function AlunosPage() {
       const response = await AlunosService.getAlunos({
         search,
         page: pagina,
-        limit: 5,
+        limit: limit,
       });
       setAlunos(response.alunos || []);
       setTotalPaginas(response.totalPages || 1);
@@ -54,7 +55,7 @@ export default function AlunosPage() {
 
   useEffect(() => {
     carregarAlunos();
-  }, [search , pagina, modalAluno]);
+  }, [search , pagina, modalAluno, limit]);
 
   return (
     <div>
@@ -126,6 +127,7 @@ export default function AlunosPage() {
             pagina={pagina}
             totalPaginas={totalPaginas}
             onPageChange={setPagina}
+            onLimitChange={setLimit}
           />
         </>
       )}

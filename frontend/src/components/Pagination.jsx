@@ -1,7 +1,5 @@
 // src/components/Pagination.jsx
-export default function Pagination({ pagina, totalPaginas, onPageChange }) {
-  if (totalPaginas <= 1) return null;
-
+export default function Pagination({ pagina, totalPaginas, onPageChange, onLimitChange }) {
   return (
     <div className="flex justify-center mt-4 gap-2">
       <button
@@ -21,6 +19,17 @@ export default function Pagination({ pagina, totalPaginas, onPageChange }) {
       >
         Próxima
       </button>
+      <select
+        value={undefined}
+        onChange={(e) => onLimitChange(Number(e.target.value))}
+        className="ml-4 border rounded px-2 py-1"
+      >
+        {[5, 10, 15, 20, 25, 30, 35].map((limit) => (
+          <option key={limit} value={limit}>
+            {limit} por página
+          </option>
+        ))}
+      </select>
     </div>
   );
 }

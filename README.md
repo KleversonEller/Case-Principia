@@ -18,7 +18,6 @@ O sistema permite **criar, listar, editar e excluir itens**, com paginação, bu
 - [React + Vite](https://vitejs.dev/)
 - [Zustand](https://zustand-demo.pmnd.rs/)
 - [Axios](https://axios-http.com/)
-- [Vitest](https://vitest.dev/) + [Testing Library](https://testing-library.com/)
 
 ### Infra
 - [Docker](https://www.docker.com/)
@@ -114,6 +113,7 @@ Isso pode demorar um pouco, não feche o terminal ou encerre a execução
 URLs após subir:
 - API: http://localhost:3001
 - Swagger: http://localhost:3001/api/docs
+- Pagina Web: http://localhost:5173
 
 ---
 
@@ -147,9 +147,7 @@ Cobertura de testes inclui:
 ## 🧠 Extras implementados
 - Seeds automáticos via Prisma
 - Logs estruturados (NestJS Logger)
-- Paginação e ordenação múltipla
-<!-- - Filtros persistentes na URL (frontend) -->
-<!-- - Feedbacks/toasts de sucesso e erro -->
+- Paginação
 - Testes unitários em backend
 
 ---
@@ -172,6 +170,7 @@ docker exec -it nestjs_app npm run test
 Acesse:
 - Frontend: http://localhost:5173
 - API Swagger: http://localhost:3001/api/docs
+- Pagina Web: http://localhost:5173
 
 ---
 

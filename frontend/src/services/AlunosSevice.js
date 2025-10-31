@@ -11,7 +11,7 @@ const createAluno = async (aluno) => {
 };
 
 const updateAluno = async (id, aluno) => {
-  const response = await api.put(`/alunos/${id}`, aluno);
+  const response = await api.patch(`/alunos/${id}`, aluno);
   return response.data;
 };
 

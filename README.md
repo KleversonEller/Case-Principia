@@ -88,7 +88,13 @@ git clone git@github.com:KleversonEller/Case-Principia.git
 cd Case-Principia
 ```
 
-2. Ter o docker compose instalado
+2. Substitua o .env.example por .env
+```bash
+cd fontend
+mv .env.example .env
+```
+
+3. Ter o docker compose instalado
 
 ```bash
 docker compose version
@@ -100,7 +106,7 @@ docker-compose --version
 
 Caso não tenha o docker intalado instale seguindo a [documentação](https://docs.docker.com/compose/install/#installation-scenarios)
 
-3. Subir o ambiente com Docker
+4. Subir o ambiente com Docker
 ```bash
 docker-compose up -d
 ```

@@ -24,6 +24,9 @@ export default function AlunosPage() {
       });
       setAlunos(response.alunos || []);
       setTotalPaginas(response.totalPages || 1);
+      if (pagina > response.totalPages) {
+        setPagina(1);
+      }
     } catch (error) {
       console.error("Erro ao buscar alunos:", error);
     } finally {

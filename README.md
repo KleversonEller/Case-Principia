@@ -92,6 +92,7 @@ cd Case-Principia
 ```bash
 cd frontend
 mv .env.example .env
+cd ../
 ```
 
 3. Ter o docker compose instalado

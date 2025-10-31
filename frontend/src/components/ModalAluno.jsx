@@ -6,12 +6,12 @@ export default function ModalAluno({ idOrAction, pageInicial }) {
   const [aluno, setAluno] = useState({});
   const [loading, setLoading] = useState(false);
 
-  const acao = idOrAction === "criar" ? "criar" : idOrAction;
+  const idOuAcao = idOrAction === "criar" ? "criar" : idOrAction;
 
   async function getAluno() {
     setLoading(true);
     try {
-      const response = await AlunosService.getAlunoById(acao);
+      const response = await AlunosService.getAlunoById(idOuAcao);
       setAluno(response || {});
     } catch (error) {
       console.error("Erro ao buscar aluno:", error);
@@ -24,11 +24,11 @@ export default function ModalAluno({ idOrAction, pageInicial }) {
     e.preventDefault();
 
     try {
-      if (acao === "criar") {
+      if (idOuAcao === "criar") {
         await AlunosService.createAluno(aluno);
         pageInicial();
       } else {
-        await AlunosService.updateAluno(acao, aluno);
+        await AlunosService.updateAluno(idOuAcao, aluno);
         pageInicial();
       }
     } catch (error) {
@@ -38,14 +38,14 @@ export default function ModalAluno({ idOrAction, pageInicial }) {
   }
 
   useEffect(() => {
-    if (acao !== "criar") {
+    if (idOuAcao !== "criar") {
       getAluno();
     }
-  }, [acao]);
+  }, [idOuAcao]);
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-10">
-      {acao === 'criar' ? (
+      {idOuAcao === 'criar' ? (
         <>
           <h1 className="text-2xl font-semibold mb-4">Criar Aluno</h1>
           {loading ? (

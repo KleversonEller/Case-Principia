@@ -114,12 +114,20 @@ OU
 ```bash
 docker compose up -d
 ```
-Isso pode demorar um pouco, não feche o terminal ou encerre a execução
+
+⚠️ Atenção: Apos rodar o comando acima e obter o feedback "Done/Started" aguarde cerca de 1 minutos antes de acessar os links abaixo.
+
+Durante esse tempo, as dependências dos containers ainda estarão sendo inicializadas — evite fechar o terminal ou encerrar a execução.
+
+Pode-se acompanha os logs da inicialização executando o seguinte comando:
+```bash
+docker compose logs -f backend
+```
 
 URLs após subir:
-- API: http://localhost:3001
-- Swagger: http://localhost:3001/api/docs
-- Pagina Web: http://localhost:5173
+- 🌐 API: http://localhost:3001
+- 📘 Swagger: http://localhost:3001/api/docs
+- 💻 Página Web: http://localhost:5173
 
 ---
 

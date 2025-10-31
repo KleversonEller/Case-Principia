@@ -90,7 +90,7 @@ cd Case-Principia
 
 2. Substitua o .env.example por .env
 ```bash
-cd fontend
+cd frontend
 mv .env.example .env
 ```
 
